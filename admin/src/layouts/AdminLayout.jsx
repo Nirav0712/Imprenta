@@ -1,19 +1,32 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 
 const AdminLayout = () => {
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#08111F] text-white">
 
-      <Sidebar />
+      {/* Sidebar */}
+
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+
+      {/* Content */}
 
       <div className="lg:ml-72">
 
-        <Header />
+        <Header
+          setSidebarOpen={setSidebarOpen}
+        />
 
-        <main className="p-8">
+        <main className="p-4 sm:p-6 lg:p-8">
 
           <Outlet />
 
@@ -23,6 +36,7 @@ const AdminLayout = () => {
 
     </div>
   );
+
 };
 
 export default AdminLayout;

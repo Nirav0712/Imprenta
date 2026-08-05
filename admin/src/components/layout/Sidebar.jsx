@@ -1,89 +1,136 @@
 import { NavLink } from "react-router-dom";
+import { FiX } from "react-icons/fi";
 import { sidebarMenu } from "../../constants/sidebarMenu";
 
-const Sidebar = () => {
+const Sidebar = ({
+  sidebarOpen,
+  setSidebarOpen,
+}) => {
   return (
-    <aside
-      className="
-      hidden
-      lg:flex
-      fixed
-      left-0
-      top-0
-      h-screen
-      w-72
-      flex-col
-      bg-[#0C1626]
-      border-r
-      border-white/10
-      "
-    >
-      {/* Logo */}
+    <>
+      {/* Mobile Overlay */}
 
-      <div className="border-b border-white/10 p-8">
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+        />
+      )}
 
-        <h1 className="text-4xl font-black text-sky-400">
+      {/* Sidebar */}
 
-          imprenta
+      <aside
+        className={`
+          fixed
+          top-0
+          left-0
+          z-50
+          flex
+          h-screen
+          w-72
+          flex-col
+          border-r
+          border-white/10
+          bg-[#0C1626]
+          transition-transform
+          duration-300
+          ${
+            sidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full"
+          }
+          lg:translate-x-0
+        `}
+      >
+        {/* Logo */}
 
-        </h1>
+        <div className="flex items-center justify-between border-b border-white/10 p-8">
 
-        <p className="mt-2 text-slate-400">
+          <div>
 
-          Admin Dashboard
+            <h1 className="text-4xl font-black text-sky-400">
 
-        </p>
+              imprenta
 
-      </div>
+            </h1>
 
-      {/* Menu */}
+            <p className="mt-2 text-slate-400">
 
-      <nav className="flex-1 overflow-y-auto px-5 py-8 space-y-2">
+              Admin Dashboard
 
-        {sidebarMenu.map((item) => {
+            </p>
 
-          const Icon = item.icon;
+          </div>
 
-          return (
+          {/* Mobile Close */}
 
-            <NavLink
-              key={item.title}
-              to={item.path}
-              className={({ isActive }) =>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="
+              rounded-xl
+              p-2
+              text-white
+              hover:bg-white/10
+              lg:hidden
+            "
+          >
+            <FiX size={24} />
+          </button>
+
+        </div>
+
+        {/* Menu */}
+
+        <nav className="flex-1 space-y-2 overflow-y-auto px-5 py-8">
+
+          {sidebarMenu.map((item) => {
+
+            const Icon = item.icon;
+
+            return (
+
+              <NavLink
+                key={item.title}
+                to={item.path}
+                onClick={() => setSidebarOpen(false)}
+                className={({ isActive }) =>
+                  `
+                  flex
+                  items-center
+                  gap-4
+                  rounded-2xl
+                  px-5
+                  py-4
+                  transition-all
+                  duration-300
+                  ${
+                    isActive
+                      ? "bg-sky-500 text-white shadow-lg"
+                      : "text-slate-400 hover:bg-white/5 hover:text-white"
+                  }
                 `
-                flex
-                items-center
-                gap-4
-                rounded-2xl
-                px-5
-                py-4
-                transition-all
-                duration-300
-                ${
-                  isActive
-                    ? "bg-sky-500 text-white shadow-lg"
-                    : "text-slate-400 hover:bg-white/5 hover:text-white"
                 }
-              `
-              }
-            >
-              <Icon size={22} />
+              >
 
-              <span className="font-medium">
+                <Icon size={22} />
 
-                {item.title}
+                <span className="font-medium">
 
-              </span>
+                  {item.title}
 
-            </NavLink>
+                </span>
 
-          );
+              </NavLink>
 
-        })}
+            );
 
-      </nav>
+          })}
 
-    </aside>
+        </nav>
+
+      </aside>
+
+    </>
   );
 };
 

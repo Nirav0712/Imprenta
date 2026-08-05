@@ -54,23 +54,18 @@ const onDrop = useCallback(
         MAX_IMAGES - images.length
       );
 
-    const preview = validFiles.map(
-      (file) => ({
+    const preview = validFiles.map((file, index) => ({
+  file,
+  preview: URL.createObjectURL(file),
+  featured:
+    images.length === 0 && index === 0,
+}));
 
-        file,
+setImages((prev) => [
+  ...prev,
+  ...preview,
+]);
 
-        preview:
-          URL.createObjectURL(file),
-
-        featured: false,
-
-      })
-    );
-
-    setImages((prev) => [
-      ...prev,
-      ...preview,
-    ]);
 
   },
   [images]
@@ -93,26 +88,37 @@ const {
 });
  
 
-  const removeImage = (index) => {
+ const removeImage = (index) => {
 
   URL.revokeObjectURL(images[index].preview);
 
-  setImages((prev) =>
-    prev.filter((_, i) => i !== index)
+  const updatedImages = images.filter(
+    (_, i) => i !== index
   );
+
+  if (
+    updatedImages.length > 0 &&
+    !updatedImages.some(
+      (img) => img.featured
+    )
+  ) {
+    updatedImages[0].featured = true;
+  }
+
+  setImages(updatedImages);
 
 };
 
-  const setFeatured = (index) => {
+ const setFeatured = (index) => {
 
-    setImages(
-      images.map((img, i) => ({
-        ...img,
-        featured: i === index,
-      }))
-    );
+  setImages((prev) =>
+    prev.map((img, i) => ({
+      ...img,
+      featured: i === index,
+    }))
+  );
 
-  };
+};
 
   return (
 
@@ -150,25 +156,61 @@ const {
 
       </p>
 
+      <div className="mt-5 flex items-center justify-between">
+
+  <div>
+
+    <p className="text-sm font-medium text-slate-300">
+
+      {images.length} / {MAX_IMAGES} Images Uploaded
+
+    </p>
+
+    <p className="mt-1 text-xs text-slate-500">
+
+      First image will be used as the default featured image.
+
+    </p>
+
+  </div>
+
+  {images.length > 0 && (
+
+    <span className="rounded-full bg-sky-500/20 px-3 py-1 text-xs font-semibold text-sky-400">
+
+      Gallery
+
+    </span>
+
+  )}
+
+</div>
+
       {/* Upload */}
 
-     <div
-  {...getRootProps()}
-        className="
-          mt-8
-          cursor-pointer
-          rounded-3xl
-          border-2
-          border-dashed
-          border-slate-600
-          bg-[#08111F]
-          p-10
-          transition-all
-          hover:border-sky-500
-        "
+   <div
+  {...(images.length < MAX_IMAGES
+    ? getRootProps()
+    : {})}
+       className={`
+  mt-8
+  rounded-3xl
+  border-2
+  border-dashed
+  bg-[#08111F]
+  p-10
+  transition-all
+  ${
+    images.length >= MAX_IMAGES
+      ? "border-red-500 cursor-not-allowed opacity-70"
+      : "cursor-pointer border-slate-600 hover:border-sky-500"
+  }
+`}
       >
 
-       <input {...getInputProps()} />
+       {images.length < MAX_IMAGES && (
+  <input {...getInputProps()} />
+)}
 
 <div className="flex flex-col items-center">
 
@@ -179,15 +221,19 @@ const {
 
   <h3 className="mt-5 text-xl font-bold text-white">
 
-    {isDragActive
-      ? "Drop Images Here"
-      : "Drag & Drop Images"}
+    {images.length >= MAX_IMAGES
+  ? "Maximum Images Uploaded"
+  : isDragActive
+  ? "Drop Images Here"
+  : "Drag & Drop Images"}
 
   </h3>
 
   <p className="mt-3 text-slate-400">
 
-    or click to browse
+   {images.length >= MAX_IMAGES
+  ? "Delete an image to upload another."
+  : "or click to browse"}
 
   </p>
 
@@ -199,7 +245,7 @@ const {
 
   <p className="mt-2 text-xs text-slate-500">
 
-    Maximum 10 Images
+    {images.length} / {MAX_IMAGES} Images
 
   </p>
 

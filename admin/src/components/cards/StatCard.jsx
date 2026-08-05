@@ -7,46 +7,73 @@ const StatCard = ({
   color,
 }) => {
   return (
-    <div
-      className="
-      rounded-3xl
-      border
-      border-white/10
-      bg-[#101B2D]
-      p-6
-      transition-all
-      duration-300
-      hover:-translate-y-1
-      hover:border-sky-400/30
-      "
-    >
-      <div className="flex items-center justify-between">
+   <div
+  className="
+    rounded-3xl
+    border
+    border-white/10
+    bg-[#101B2D]
+
+    p-5
+    sm:p-6
+
+    transition-all
+    duration-300
+
+    hover:-translate-y-1
+    hover:border-sky-400/30
+  "
+>
+    <div className="flex items-start justify-between">
 
         <div>
 
-          <p className="text-slate-400">
+        <p className="text-sm text-slate-400">
             {title}
           </p>
 
-          <h2 className="mt-3 text-4xl font-black text-white">
+         <h2
+  className="
+    mt-2
+
+    text-3xl
+
+    sm:text-4xl
+
+    font-black
+    text-white
+  "
+>
             {value}
           </h2>
 
         </div>
 
-        <div
-          className="flex h-16 w-16 items-center justify-center rounded-2xl"
-          style={{ background: color }}
+       <div
+  className="flex h-16 w-16 items-center justify-center rounded-2xl"
         >
           <Icon
-            size={28}
-            className="text-white"
-          />
+  size={24}
+  className="text-white sm:text-[28px]"
+/>
         </div>
 
       </div>
 
-      <div className="mt-8 flex items-center text-sm text-emerald-400">
+   <div
+  className="
+    mt-6
+
+    flex
+    items-center
+
+    text-xs
+
+    sm:text-sm
+
+    text-emerald-400
+  "
+>
 
         <FiArrowUpRight />
 

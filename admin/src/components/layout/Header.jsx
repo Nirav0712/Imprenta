@@ -1,21 +1,61 @@
-import { FiBell, FiSearch, FiUser } from "react-icons/fi";
+import {
+  FiBell,
+  FiSearch,
+  FiUser,
+  FiMenu,
+} from "react-icons/fi";
 
-const Header = () => {
+const Header = ({
+  setSidebarOpen,
+}) => {
   return (
     <header className="sticky top-0 z-40 h-20 border-b border-white/10 bg-[#101B2D]/90 backdrop-blur-xl">
-      <div className="flex h-full items-center justify-between px-8">
+<div className="flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
+      
 
-        {/* Left */}
+      {/* Left */}
 
-        <div>
-          <h1 className="text-2xl font-bold text-white">
-            Dashboard
-          </h1>
+<div className="flex items-center gap-4">
 
-          <p className="mt-1 text-sm text-slate-400">
-            Welcome back, Admin 👋
-          </p>
-        </div>
+  {/* Mobile Menu */}
+
+  <button
+    onClick={() => setSidebarOpen(true)}
+    className="
+      flex
+      h-12
+      w-12
+      items-center
+      justify-center
+      rounded-xl
+      border
+      border-white/10
+      bg-white/5
+      text-white
+      hover:bg-sky-500/20
+      lg:hidden
+    "
+  >
+    <FiMenu size={24} />
+  </button>
+
+  <div>
+
+    <h1 className="text-2xl font-bold text-white">
+
+      Dashboard
+
+    </h1>
+
+    <p className="mt-1 text-sm text-slate-400">
+
+      Welcome back, Admin 👋
+
+    </p>
+
+  </div>
+
+</div>
 
         {/* Right */}
 
