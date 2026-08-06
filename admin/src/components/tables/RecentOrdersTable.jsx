@@ -152,11 +152,9 @@ const RecentOrdersTable = () => {
 
         {orders.map((order) => (
 
-          <RecentOrderCard
-            key={order.id}
-            order={order}
-          />
-
+          <div key={order.id} className="text-white">
+  {order.customer}
+</div>
         ))}
 
       </div>

@@ -14,7 +14,7 @@ export const sidebarMenu = [
   {
     title: "Dashboard",
     icon: FiGrid,
-    path: "/",
+    path: "/dashboard",
   },
   {
     title: "Products",

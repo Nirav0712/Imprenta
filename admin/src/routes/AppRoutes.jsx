@@ -2,10 +2,10 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
 
 import Login from "../pages/auth/Login";
-
 import Dashboard from "../pages/dashboard/Dashboard";
 
 import Products from "../pages/products/Products";
@@ -21,19 +21,16 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
 
-        {/* ===========================
-            PUBLIC ROUTES
-        =========================== */}
+        {/* Public */}
+        <Route path="/login" element={<Login />} />
 
+        {/* Redirect */}
         <Route
-          path="/login"
-          element={<Login />}
+          path="/"
+          element={<Navigate to="/dashboard" replace />}
         />
 
-        {/* ===========================
-            PROTECTED ROUTES
-        =========================== */}
-
+        {/* Protected */}
         <Route
           element={
             <ProtectedRoute>
@@ -41,42 +38,30 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         >
-
-          {/* Dashboard */}
-
           <Route
-            path="/"
+            path="/dashboard"
             element={<Dashboard />}
           />
-
-          {/* Product List */}
 
           <Route
             path="/products"
             element={<Products />}
           />
 
-          {/* Add Product */}
-
           <Route
             path="/products/add"
             element={<AddProduct />}
           />
-
-          {/* Edit Product */}
 
           <Route
             path="/products/edit/:id"
             element={<EditProduct />}
           />
 
-          {/* View Product */}
-
           <Route
             path="/products/view/:id"
             element={<ViewProduct />}
           />
-
         </Route>
 
       </Routes>

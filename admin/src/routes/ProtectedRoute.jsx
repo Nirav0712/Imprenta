@@ -1,9 +1,18 @@
+import { Navigate } from "react-router-dom";
+
 const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  const isLoggedIn = true;
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
 
-  if (!isLoggedIn) {
-    return <h1>Please Login</h1>;
+  if (!user || user.role !== "admin") {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    return <Navigate to="/login" replace />;
   }
 
   return children;

@@ -2,14 +2,10 @@ import { NavLink } from "react-router-dom";
 import { FiX } from "react-icons/fi";
 import { sidebarMenu } from "../../constants/sidebarMenu";
 
-const Sidebar = ({
-  sidebarOpen,
-  setSidebarOpen,
-}) => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   return (
     <>
       {/* Mobile Overlay */}
-
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
@@ -18,7 +14,6 @@ const Sidebar = ({
       )}
 
       {/* Sidebar */}
-
       <aside
         className={`
           fixed
@@ -43,93 +38,54 @@ const Sidebar = ({
         `}
       >
         {/* Logo */}
-
         <div className="flex items-center justify-between border-b border-white/10 p-8">
-
           <div>
-
             <h1 className="text-4xl font-black text-sky-400">
-
-              imprenta
-
+              Imprenta
             </h1>
 
             <p className="mt-2 text-slate-400">
-
               Admin Dashboard
-
             </p>
-
           </div>
-
-          {/* Mobile Close */}
 
           <button
             onClick={() => setSidebarOpen(false)}
-            className="
-              rounded-xl
-              p-2
-              text-white
-              hover:bg-white/10
-              lg:hidden
-            "
+            className="rounded-xl p-2 text-white hover:bg-white/10 lg:hidden"
           >
             <FiX size={24} />
           </button>
-
         </div>
 
         {/* Menu */}
-
-        <nav className="flex-1 space-y-2 overflow-y-auto px-5 py-8">
-
+        <nav className="flex-1 overflow-y-auto px-5 py-8">
           {sidebarMenu.map((item) => {
-
             const Icon = item.icon;
 
             return (
-
               <NavLink
                 key={item.title}
                 to={item.path}
+                end={item.path === "/dashboard"}
                 onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) =>
-                  `
-                  flex
-                  items-center
-                  gap-4
-                  rounded-2xl
-                  px-5
-                  py-4
-                  transition-all
-                  duration-300
-                  ${
+                  `flex items-center gap-4 rounded-2xl px-5 py-4 mb-2 transition-all duration-300 ${
                     isActive
                       ? "bg-sky-500 text-white shadow-lg"
                       : "text-slate-400 hover:bg-white/5 hover:text-white"
-                  }
-                `
+                  }`
                 }
               >
-
                 <Icon size={22} />
 
                 <span className="font-medium">
-
                   {item.title}
-
                 </span>
-
               </NavLink>
-
             );
-
           })}
-
         </nav>
-
       </aside>
-
     </>
   );
 };
