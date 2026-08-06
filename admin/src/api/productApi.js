@@ -1,47 +1,33 @@
-// Backend API Placeholder
-
-const BASE_URL = "http://localhost:5000/api/products";
+import API from "../config/axios";
 
 export const productApi = {
-
+  // Get All Products
   getAll: async () => {
-
-    console.log("GET", BASE_URL);
-
-    return [];
-
+    const { data } = await API.get("/products");
+    return data;
   },
 
+  // Get Single Product
   getById: async (id) => {
-
-    console.log("GET", `${BASE_URL}/${id}`);
-
-    return null;
-
-  },
-
-  create: async (data) => {
-
-    console.log("POST", data);
-
+    const { data } = await API.get(`/products/${id}`);
     return data;
-
   },
 
-  update: async (id, data) => {
-
-    console.log("PUT", id, data);
-
+  // Create Product
+  create: async (product) => {
+    const { data } = await API.post("/products", product);
     return data;
-
   },
 
+  // Update Product
+  update: async (id, product) => {
+    const { data } = await API.put(`/products/${id}`, product);
+    return data;
+  },
+
+  // Delete Product
   delete: async (id) => {
-
-    console.log("DELETE", id);
-
-    return true;
-
+    const { data } = await API.delete(`/products/${id}`);
+    return data;
   },
-
 };

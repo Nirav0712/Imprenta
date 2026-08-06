@@ -22,21 +22,26 @@ const ProductForm = () => {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data) => {
-    try {
-      await productService.createProduct(data);
+const onSubmit = async (data) => {
+  try {
+    console.log("Submitting Product:", data);
 
-      console.log("Product Saved:", data);
+    const response = await productService.createProduct(data);
 
-      methods.reset();
+    console.log("Server Response:", response);
 
-      alert("Product saved successfully.");
-    } catch (error) {
-      console.error(error);
+    alert("Product saved successfully.");
 
-      alert("Something went wrong.");
-    }
-  };
+    methods.reset();
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.message ||
+      "Failed to save product."
+    );
+  }
+};
 
   return (
     <FormProvider {...methods}>

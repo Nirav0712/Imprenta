@@ -1,5 +1,7 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { useFormContext } from "react-hook-form";
+import { uploadService } from "../../../services/uploadService";
 
 import {
   FiUploadCloud,
@@ -9,6 +11,9 @@ import {
 } from "react-icons/fi";
 
 const ProductImages = () => {
+  const { setValue } = useFormContext();
+
+const [uploading, setUploading] = useState(false);
 
   const [images, setImages] = useState([]);
 
@@ -16,94 +21,76 @@ const ProductImages = () => {
 
   const MAX_SIZE = 5 * 1024 * 1024;
 
-  const onDrop = useCallback(
 
-    (acceptedFiles) => {
 
-      const existingNames = images.map(
-        (img) => img.file.name
-      );
 
-      const validFiles = acceptedFiles
-        .filter((file) => {
+const onDrop = useCallback(
+  async (acceptedFiles) => {
 
-          if (
-            existingNames.includes(file.name)
-          ) {
+    if (images.length + acceptedFiles.length > MAX_IMAGES) {
+      alert(`Maximum ${MAX_IMAGES} images allowed.`);
+      return;
+    }
 
-            alert(
-              `${file.name} already added`
-            );
+    setUploading(true);
 
-            return false;
+    try {
+      const uploadedImages = [];
 
-          }
+      for (const file of acceptedFiles) {
+        if (file.size > MAX_SIZE) {
+          alert(`${file.name} exceeds 5MB`);
+          continue;
+        }
 
-          if (file.size > MAX_SIZE) {
+        const response = await uploadService.uploadImage(file);
 
-            alert(
-              `${file.name} exceeds 5MB`
-            );
+        uploadedImages.push({
+  url: response.image.url,
+  preview: response.image.url,
+  public_id: response.image.public_id,
+  featured:
+    images.length === 0 &&
+    uploadedImages.length === 0,
+});
+      }
 
-            return false;
+      const updated = [...images, ...uploadedImages];
 
-          }
+      setImages(updated);
+      setValue("images", updated, {
+  shouldDirty: true,
+  shouldValidate: true,
+});
 
-          return true;
-
-        })
-        .slice(
-          0,
-          MAX_IMAGES - images.length
-        );
-
-      const preview = validFiles.map(
-        (file, index) => ({
-
-          file,
-
-          preview:
-            URL.createObjectURL(file),
-
-          featured:
-            images.length === 0 &&
-            index === 0,
-
-        })
-      );
-
-      setImages((prev) => [
-        ...prev,
-        ...preview,
-      ]);
-
-    },
-
-    [images]
-
-  );
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "Image upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  },
+  [images, setValue]
+);
 
   const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-  } = useDropzone({
-
-    onDrop,
-
-    multiple: true,
-
-    accept: {
-      "image/*": [],
-    },
-
-  });
+  getRootProps,
+  getInputProps,
+  isDragActive,
+} = useDropzone({
+  onDrop,
+  multiple: true,
+  disabled: uploading || images.length >= MAX_IMAGES,
+  accept: {
+    "image/*": [],
+  },
+});
 
   const removeImage = (index) => {
 
-    URL.revokeObjectURL(
-      images[index].preview
-    );
+    // URL.revokeObjectURL(
+    //   images[index].preview
+    // );
 
     const updatedImages =
       images.filter(
@@ -122,17 +109,25 @@ const ProductImages = () => {
     }
 
     setImages(updatedImages);
+setValue("images", updatedImages, {
+  shouldDirty: true,
+  shouldValidate: true,
+});
 
   };
 
   const setFeatured = (index) => {
 
-    setImages((prev) =>
-      prev.map((img, i) => ({
-        ...img,
-        featured: i === index,
-      }))
-    );
+    const updated = images.map((img, i) => ({
+  ...img,
+  featured: i === index,
+}));
+
+setImages(updated);
+setValue("images", updated, {
+  shouldDirty: true,
+  shouldValidate: true,
+});
 
   };
 
@@ -187,9 +182,10 @@ const ProductImages = () => {
   {/* Upload Box */}
 
   <div
-    {...(images.length < MAX_IMAGES
-      ? getRootProps()
-      : {})}
+  {...(images.length < MAX_IMAGES ? getRootProps() : {})}
+  style={{
+    pointerEvents: uploading ? "none" : "auto",
+  }}
     className={`
       mt-8
       rounded-3xl
@@ -209,8 +205,11 @@ const ProductImages = () => {
   >
 
     {images.length < MAX_IMAGES && (
-      <input {...getInputProps()} />
-    )}
+       <input
+  {...getInputProps()}
+  disabled={uploading}
+/>
+)}
 
     <div className="flex flex-col items-center">
 
@@ -218,6 +217,13 @@ const ProductImages = () => {
         size={55}
         className="text-sky-400"
       />
+
+{uploading && (
+  <p className="mb-4 text-sky-400 font-semibold">
+    Uploading Images...
+  </p>
+)}
+
 
       <h3 className="mt-5 text-xl font-bold text-white">
 
@@ -275,7 +281,7 @@ const ProductImages = () => {
           {images.map((img, index) => (
 
             <div
-              key={img.preview}
+             key={img.public_id || img.preview}
               className="
                 group
                 relative
