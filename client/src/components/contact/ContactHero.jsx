@@ -123,11 +123,11 @@ const ContactHero = () => {
 
                     <p className="leading-7 text-slate-300">
 
-                      Imprenta Private Limited
+                      Gala No. C-2, Dungra Park
 
                       <br />
 
-                      Ahmedabad, Gujarat
+                      Vapi, Gujarat
 
                       <br />
 
@@ -173,7 +173,7 @@ const ContactHero = () => {
 
                     <h2 className="mt-3 text-4xl font-black text-white">
 
-                      5000+
+                      500+
 
                     </h2>
 

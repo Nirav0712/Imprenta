@@ -55,11 +55,11 @@ const ContactMap = () => {
 
                   <p className="mt-2 leading-7 text-slate-400">
 
-                    Imprenta Private Limited
+                    Gala No. C-2, Dungra Park
 
                     <br />
 
-                    Ahmedabad, Gujarat
+                    Vapi, Gujarat
 
                     <br />
 
@@ -130,17 +130,16 @@ const ContactMap = () => {
 
           {/* Map */}
 
-          <div className="overflow-hidden rounded-[36px] border border-white/10 bg-white/5 backdrop-blur-2xl">
-
-            <iframe
-              title="Google Map"
-              src="https://www.google.com/maps?q=Ahmedabad,Gujarat&output=embed"
-              className="h-[600px] w-full border-0"
-              loading="lazy"
-              allowFullScreen
-            />
-
-          </div>
+         <div className="w-full overflow-hidden rounded-2xl">
+  <iframe
+    title="Google Map"
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3740.8341654159053!2d72.93628567595752!3d20.348468410794897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be0cf9b0b7f9ebb%3A0xad1acd77551106dc!2sScancode%20Auto%20ID%20Technology%20Pvt.%20Ltd.!5e0!3m2!1sen!2sin!4v1786100899592!5m2!1sen!2sin"
+    className="h-[600px] w-full border-0"
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="strict-origin-when-cross-origin"
+  />
+</div>
 
         </div>
 

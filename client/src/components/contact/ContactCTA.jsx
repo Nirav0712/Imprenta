@@ -139,7 +139,7 @@ const ContactCTA = () => {
               </Link>
 
               <a
-                href="tel:+919876543210"
+                href="tel:+94270 61888"
                 className="
                   flex
                   items-center
@@ -193,7 +193,7 @@ const ContactCTA = () => {
 
                 <p className="mt-4 text-2xl font-black text-sky-400">
 
-                  +91 98765 43210
+                  +91 94270 61888
 
                 </p>
 

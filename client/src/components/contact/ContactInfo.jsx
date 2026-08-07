@@ -9,7 +9,7 @@ const contactCards = [
   {
     icon: <FiPhone size={26} />,
     title: "Call Us",
-    value: "+91 98765 43210",
+    value: "+91 94270 61888",
     sub: "Mon - Sat | 9:00 AM - 7:00 PM",
   },
   {
@@ -21,7 +21,7 @@ const contactCards = [
   {
     icon: <FiMapPin size={26} />,
     title: "Visit Office",
-    value: "Ahmedabad, Gujarat",
+    value: "Gala No. C-2, Dungra Park, Vapi, Gujarat-396195",
     sub: "India",
   },
   {
