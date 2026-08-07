@@ -1,11 +1,11 @@
-// import hero1 from "../assets/hero/hero1.jpg";
-// import hero2 from "../assets/hero/hero2.jpg";
-// import hero3 from "../assets/hero/hero3.jpg";
-// import hero4 from "../assets/hero/hero4.jpg";
+import hero1 from "../assets/images/hero/hero1.jpeg";
+import hero2 from "../assets/images/hero/hero2.jpeg";
+import hero3 from "../assets/images/hero/hero3.jpeg";
+import hero4 from "../assets/images/hero/hero4.jpeg";
 
 const heroSlides = [
   {
-    // image: hero1,
+    image: hero1,
     badge: "Premium Printing & Packaging",
 
     title1: "Packaging That",
@@ -17,7 +17,7 @@ const heroSlides = [
   },
 
   {
-    // image: hero2,
+    image: hero2,
     badge: "Shrink Sleeves & Labels",
 
     title1: "Packaging",
@@ -29,7 +29,7 @@ const heroSlides = [
   },
 
   {
-    // image: hero3,
+    image: hero3,
     badge: "Advanced Manufacturing",
 
     title1: "Innovation",
@@ -41,7 +41,7 @@ const heroSlides = [
   },
 
   {
-    // image: hero4,
+    image: hero4,
     badge: "Trusted Manufacturing Partner",
 
     title1: "From Design",

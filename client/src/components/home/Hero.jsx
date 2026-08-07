@@ -124,7 +124,7 @@ const Hero = () => {
         <div className="relative overflow-hidden rounded-[38px] border border-white/10 bg-white/5 backdrop-blur-xl p-5 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
 
          <img
-  //  src={slide.image}
+   src={slide.image}
    alt={slide.title1}
    className="w-full h-[320px] sm:h-[420px] lg:h-[560px] rounded-[30px] object-cover animate-floating animate-zoom transition-all duration-700"
 />

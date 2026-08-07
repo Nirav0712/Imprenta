@@ -5,7 +5,7 @@ const templatesData = [
     category: "Business Cards",
     price: "₹299",
     rating: 4.9,
-    image: "/images/templates/template1.webp",
+    image: "/images/templates/template1.jpeg",
     badge: "Popular",
   },
 
