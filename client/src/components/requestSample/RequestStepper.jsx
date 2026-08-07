@@ -35,38 +35,30 @@ const steps = [
   },
 ];
 
-const RequestStepper = ({
-  currentStep = 1,
-}) => {
+const RequestStepper = ({ currentStep = 1 }) => {
   return (
-    <section className="py-10">
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+    <section className="py-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-10">
 
         <div className="relative">
 
-          {/* Line */}
+          {/* Background Line */}
+          <div className="absolute left-0 right-0 top-7 hidden h-[2px] bg-white/10 md:block" />
 
-          <div className="absolute left-0 right-0 top-7 hidden md:block h-[2px] bg-white/10" />
-
+          {/* Progress Line */}
           <div
-            className="absolute left-0 top-7 hidden md:block h-[2px] bg-sky-400 transition-all duration-700"
+            className="absolute left-0 top-7 hidden h-[2px] bg-sky-400 transition-all duration-700 md:block"
             style={{
               width: `${((currentStep - 1) / 4) * 100}%`,
             }}
           />
 
           {/* Steps */}
-
           <div className="grid grid-cols-2 gap-y-8 md:grid-cols-5">
 
             {steps.map((step) => {
-
-              const completed =
-                step.id < currentStep;
-
-              const active =
-                step.id === currentStep;
+              const completed = step.id < currentStep;
+              const active = step.id === currentStep;
 
               return (
                 <div
@@ -75,7 +67,6 @@ const RequestStepper = ({
                 >
 
                   {/* Circle */}
-
                   <div
                     className={`
                       relative
@@ -100,17 +91,10 @@ const RequestStepper = ({
                       }
                     `}
                   >
-
-                    {completed ? (
-                      <FiCheck />
-                    ) : (
-                      step.icon
-                    )}
-
+                    {completed ? <FiCheck /> : step.icon}
                   </div>
 
                   {/* Title */}
-
                   <h4
                     className={`
                       mt-4
@@ -134,11 +118,9 @@ const RequestStepper = ({
             })}
 
           </div>
-
         </div>
 
       </div>
-
     </section>
   );
 };
