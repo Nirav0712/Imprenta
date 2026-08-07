@@ -157,7 +157,7 @@ const Hero = () => {
   alt={slide.title1}
   className="
     w-full
-    aspect-[2418/1104]
+    h-full
     rounded-[30px]
     object-cover
     animate-floating
