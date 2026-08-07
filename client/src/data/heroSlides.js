@@ -6,35 +6,35 @@ import hero4 from "../assets/images/hero/hero-4.png";
 const heroSlides = [
   {
     image: hero1,
-    badge: "Premium Printing & Packaging",
+    badge: "Food & FMCG Packaging",
 
     title1: "Packaging That",
-    title2: "Performs Beyond",
-    title3: "the Sample Pack",
+    title2: "Makes Every",
+    title3: "Product Appetizing",
 
     description:
-      "Imprenta Private Limited manufactures the packaging that carries your product from production line to customer's hand — product labels, shrink sleeves, mono cartons, seamless plastic tubes.",
+      "Imprenta transforms food packaging into a powerful brand statement with vibrant designs, quality printing, and finishing solutions that help products stand out on the shelf.",
   },
 
   {
     image: hero2,
-    badge: "Shrink Sleeves & Labels",
+    badge: "Premium Skincare Packaging",
 
-    title1: "Packaging",
-    title2: "Built for",
-    title3: "Every Industry",
+    title1: "Packaging That Looks",
+    title2: "As Premium As",
+    title3: "Your Skincare",
 
     description:
-      "Serving FMCG, pharmaceuticals, cosmetics, chemicals and industrial businesses with packaging engineered for durability, compliance and premium shelf presence.",
+      "Imprenta delivers sophisticated packaging solutions for skincare products, creating clean, modern designs that communicate quality, trust, and a premium brand experience.",
   },
 
   {
     image: hero3,
-    badge: "Advanced Manufacturing",
+    badge: "Premium Beauty Packaging",
 
-    title1: "Innovation",
-    title2: "Meets",
-    title3: "Precision",
+    title1: "Packaging That Gives",
+    title2: "Beauty Products",
+    title3: "A Natural Edge",
 
     description:
       "Powered by Flexographic, Offset, Gravure and Digital printing technologies delivering exceptional print quality and dependable production capacity.",
@@ -42,14 +42,14 @@ const heroSlides = [
 
   {
     image: hero4,
-    badge: "Trusted Manufacturing Partner",
+    badge: "Beverage Packaging Solutions",
 
-    title1: "From Design",
-    title2: "To Final",
-    title3: "Delivery",
+    title1: "Packaging That",
+    title2: "Captures The Essence",
+    title3: "Of Pure",
 
     description:
-      "Prototype sampling, quality inspection and dependable manufacturing under one roof to deliver packaging that performs from factory to customer.",
+      "Imprenta creates distinctive beverage packaging that brings freshness, clarity, and brand identity together from eye-catching labels to high-quality printed solutions.",
   },
 ];
 
