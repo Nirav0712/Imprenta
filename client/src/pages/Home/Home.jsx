@@ -21,17 +21,17 @@ const Home = () => {
 
       <Categories />
 
-      <PopularProducts />
+      {/* <PopularProducts /> */}
 
-      <TrendingProducts />
+      {/* <TrendingProducts />
 
-      <LabelsPackagingProducts />
+      <LabelsPackagingProducts /> */}
 
-      <FeaturedBanner />
+      {/* <FeaturedBanner /> */}
 
-      <ExploreMoreProducts />
+      {/* <ExploreMoreProducts />
 
-      <NewArrivalsProducts />
+      <NewArrivalsProducts /> */}
 
       <NewsletterSection />
 

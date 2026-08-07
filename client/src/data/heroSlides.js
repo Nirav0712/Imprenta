@@ -13,7 +13,7 @@ const heroSlides = [
     title3: "the Sample Pack",
 
     description:
-      "Imprenta Private Limited manufactures the packaging that carries your product from production line to customer's hand — product labels, shrink sleeves, mono cartons, seamless plastic tubes and corporate branding materials are built to hold their print, adhesion and shape.",
+      "Imprenta Private Limited manufactures the packaging that carries your product from production line to customer's hand — product labels, shrink sleeves, mono cartons, seamless plastic tubes.",
   },
 
   {

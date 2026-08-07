@@ -1,3 +1,5 @@
+import newsletter from "../../assets/images/newsletter/newsletter.png";
+
 const NewsletterSection = () => {
   return (
    <section className="py-20 bg-transparent">
@@ -12,11 +14,11 @@ const NewsletterSection = () => {
 
           <div>
 
-            <img
-              src="/images/newsletter/newsletter.webp"
-              alt="Newsletter"
-              className="w-full rounded-xl object-cover"
-            />
+           <img
+  src={newsletter}
+  alt="Newsletter"
+  className="w-full rounded-xl object-cover"
+/>
 
           </div>
 

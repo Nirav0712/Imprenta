@@ -35,9 +35,9 @@ const Hero = () => {
 
   <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10">
 
-    <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
-      <div className="absolute -left-40 top-10 h-80 w-80 rounded-full bg-sky-500/15 blur-[130px]"></div>
+    <div className="absolute -left-40 top-10 h-80 w-80 rounded-full bg-sky-400/10 blur-[130px]"></div>
 
 <div className="absolute right-0 top-20 h-[420px] w-[420px] rounded-full bg-cyan-400/10 blur-[150px]"></div>
 
@@ -46,9 +46,9 @@ const Hero = () => {
       {/* LEFT CONTENT */}
 
       <div
-        key={activeSlide}
-        className="animate-fadeLeft"
-      >
+  key={activeSlide}
+  className="animate-fadeLeft text-center lg:text-left"
+>
 
         {/* Badge */}
 
@@ -60,51 +60,80 @@ const Hero = () => {
 
         {/* Heading */}
 
-        <h1 className="mt-8 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.1] text-white">
+     <h1 className="mt-6 sm:mt-8 text-4xl sm:text-4xl lg:text-5xl xl:text-6xl font-black leading-[1.08] text-white">
+  {slide.title1}
 
-          {slide.title1}
+  <span className="block text-sky-400">
+    {slide.title2}
+  </span>
 
-          <span className="block text-sky-400">
-
-            {slide.title2}
-
-          </span>
-
-          <span className="block">
-
-            {slide.title3}
-
-          </span>
-
-        </h1>
+  <span className="block">
+    {slide.title3}
+  </span>
+</h1>
 
         {/* Description */}
 
-        <p className="mt-8 max-w-2xl text-base sm:text-lg lg:text-xl leading-8 text-slate-300">
-
-          {slide.description}
-
-        </p>
+      <p className="mx-auto lg:mx-0 mt-5 sm:mt-8 max-w-xl text-sm sm:text-lg lg:text-xl leading-7 sm:leading-8 text-slate-300">
+  {slide.description}
+</p>
 
         {/* Buttons */}
 
-        <div className="mt-10 flex flex-col sm:flex-row gap-5">
+       <div className="mt-7 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-5 w-full sm:w-auto">
 
-        <Link
-  to="/request-sample"
-  className="group inline-flex items-center justify-center rounded-2xl bg-sky-500 px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:bg-sky-600 hover:scale-105"
->
-  Request a Sample
-  <FiArrowRight className="ml-3 transition-transform duration-300 group-hover:translate-x-1" />
-</Link>
+  <Link
+    to="/request-sample"
+    className="
+      group
+      w-full sm:w-auto
+      inline-flex
+      items-center
+      justify-center
+      gap-2
+      rounded-2xl
+      bg-sky-500
+      px-6 sm:px-8
+      py-3.5 sm:py-4
+      text-base sm:text-lg
+      font-semibold
+      text-white
+      shadow-lg
+      shadow-sky-500/20
+      transition-all
+      duration-300
+      hover:bg-sky-600
+      hover:scale-[1.02]
+      active:scale-[0.98]
+    "
+  >
+    Request a Sample
+    <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+  </Link>
 
-          <button className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur-xl px-8 py-4 text-lg font-semibold text-white transition hover:border-sky-400 hover:bg-white/10">
+  <button
+    className="
+      w-full sm:w-auto
+      rounded-2xl
+      border border-white/15
+      bg-white/5
+      backdrop-blur-xl
+      px-6 sm:px-8
+      py-3.5 sm:py-4
+      text-base sm:text-lg
+      font-semibold
+      text-white
+      transition-all
+      duration-300
+      hover:border-sky-400
+      hover:bg-white/10
+      active:scale-[0.98]
+    "
+  >
+    Explore Products →
+  </button>
 
-            Explore Products →
-
-          </button>
-
-        </div>
+</div>
 
       </div>
 
@@ -121,15 +150,24 @@ const Hero = () => {
 
         {/* Card */}
 
-        <div className="relative overflow-hidden rounded-[38px] border border-white/10 bg-white/5 backdrop-blur-xl p-5 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
+        {/* <div className="relative overflow-hidden rounded-[38px] border border-white/10 bg-white/5 backdrop-blur-xl p-5 shadow-[0_30px_80px_rgba(0,0,0,0.35)]"> */}
 
-         <img
-   src={slide.image}
-   alt={slide.title1}
-   className="w-full h-[320px] sm:h-[420px] lg:h-[560px] rounded-[30px] object-cover animate-floating animate-zoom transition-all duration-700"
+<img
+  src={slide.image}
+  alt={slide.title1}
+  className="
+    w-full
+    aspect-[2418/1104]
+    rounded-[30px]
+    object-cover
+    animate-floating
+    animate-zoom
+    transition-all
+    duration-700
+  "
 />
 
-        </div>
+        {/* </div> */}
 
       </div>
 
