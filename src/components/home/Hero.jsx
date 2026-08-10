@@ -140,7 +140,7 @@ const Hero = () => {
     active:scale-[0.98]
   "
 >
-   +91 94270 61888
+   Contact us
   <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
 </a>
 
