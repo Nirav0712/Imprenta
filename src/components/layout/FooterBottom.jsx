@@ -5,6 +5,7 @@ import {
   FiYoutube,
   FiArrowUp,
 } from "react-icons/fi";
+import logo from "../../assets/logo/logo.png";
 
 const FooterBottom = () => {
   const scrollToTop = () => {
@@ -27,15 +28,15 @@ const FooterBottom = () => {
 
           <div className="text-center lg:text-left">
 
-            <h2 className="text-2xl font-bold text-white">
-
-              imprenta
-
-            </h2>
+<img
+    src={logo}
+    alt="Imprenta Logo"
+    className="mx-auto lg:mx-0 w-auto h-10 sm:h-11 md:h-12 lg:h-14 xl:h-16 max-w-[150px] sm:max-w-[170px] md:max-w-[190px] object-contain"
+/>
 
             <p className="mt-2 text-gray-400 text-sm">
 
-              © {new Date().getFullYear()} Imprenta.
+              © {new Date().getFullYear()} Imprenta Pvt Ltd.
               All Rights Reserved.
 
             </p>
