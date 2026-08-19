@@ -92,7 +92,7 @@ const WhyChooseSection = () => {
 
         {/* CTA */}
 
-        <div className="mt-24 rounded-[36px] border border-white/10 bg-gradient-to-r from-sky-500/10 via-cyan-500/10 to-sky-500/10 backdrop-blur-xl p-10 lg:p-16">
+        {/* <div className="mt-24 rounded-[36px] border border-white/10 bg-gradient-to-r from-sky-500/10 via-cyan-500/10 to-sky-500/10 backdrop-blur-xl p-10 lg:p-16">
 
           <div className="grid lg:grid-cols-2 gap-10 items-center">
 
@@ -129,7 +129,7 @@ const WhyChooseSection = () => {
 
           </div>
 
-        </div>
+        </div> */}
 
       </div>
 
