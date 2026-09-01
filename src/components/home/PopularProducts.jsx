@@ -29,9 +29,9 @@ const PopularProducts = () => {
     getProducts();
   }, []);
   return (
-    <section className="py-20 bg-transparent">
+    <section className="py-20 bg-transparent overflow-hidden">
 
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+      <div className="w-full mx-auto px-4 sm:px-7 lg:px-11 xl:px-15 2xl:px-19">
 
 
         {/* Heading */}

@@ -12,7 +12,7 @@ const services = [
 const WhatWeOffer = () => {
     return (
         <section className="py-24">
-            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+            <div className="w-full w-full px-4 sm:px-7 lg:px-11 xl:px-15 2xl:px-19">
                 <div className="text-center max-w-3xl mx-auto">
                     <span className="inline-flex rounded-full border border-sky-400/20 bg-sky-500/10 px-5 py-2 text-sm font-semibold text-sky-300 backdrop-blur-xl">
                         WHAT WE OFFER

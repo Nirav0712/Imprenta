@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from "swiper/modules";
-import "swiper/css";
+import { useState, useEffect, useRef } from "react";
+import { fetchCategories } from "../../services/api";
 
 import category1 from "../../assets/images/categories/category-1.png";
 import category2 from "../../assets/images/categories/category-2.png";
@@ -9,9 +8,6 @@ import category3 from "../../assets/images/categories/category-3.png";
 import category4 from "../../assets/images/categories/category-4.png";
 import category5 from "../../assets/images/categories/category-5.png";
 import category6 from "../../assets/images/categories/category-6.png";
-
-import { useState, useEffect } from "react";
-import { fetchCategories, fetchHomepage } from "../../services/api";
 
 const imageMap = {
   "category-1.png": category1,
@@ -30,7 +26,9 @@ const getSrcFromMap = (path) => {
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-  const [cmsData, setCmsData] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [isHovering, setIsHovering] = useState(false);
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -46,238 +44,184 @@ const Categories = () => {
         // Filter only active categories
         const activeCategories = dbCategories.filter(cat => cat.status === "active");
         setCategories(activeCategories);
+
+        if (activeCategories.length > 0) {
+          setActiveCategory(activeCategories[0]);
+        }
       } catch (err) {
         console.error("Failed to load categories", err);
       }
     };
-    const loadCMS = async () => {
-      try {
-        const res = await fetchHomepage();
-        if (res?.data && res.data.active) {
-          setCmsData(res.data);
-        }
-      } catch (err) {
-        console.error("Failed to load CMS", err);
-      }
-    };
     loadCategories();
-    loadCMS();
   }, []);
 
-  return (
-    <section className="w-full px-4 sm:px-7 lg:px-11 xl:px-15 2xl:px-19">
-      {/* Section Heading */}
-      <div className="w-full mb-7 sm:mb-9 lg:mb-10 flex items-end justify-between">
-        <div>
-          {cmsData?.servicesDescription && (
-            <p className="mb-2 text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-sky-400">
-              {cmsData.servicesDescription}
-            </p>
-          )}
+  useEffect(() => {
+    if (isHovering || categories.length === 0) return;
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
-            {cmsData?.servicesTitle || "Explore all categories"}
-          </h2>
-        </div>
+    const timer = setInterval(() => {
+      setActiveCategory((current) => {
+        if (!current) return categories[0];
+        const currentIndex = categories.findIndex(
+          (c) => (c._id && current._id && c._id === current._id) ||
+            (c.id && current.id && c.id === current.id) ||
+            (c.slug && current.slug && c.slug === current.slug)
+        );
+        const nextIndex = (currentIndex >= 0 ? currentIndex + 1 : 1) % categories.length;
+        return categories[nextIndex];
+      });
+    }, 4500); // 4.5 seconds per slide
+
+    return () => clearInterval(timer);
+  }, [categories, isHovering]);
+
+
+
+  return (
+    <section
+      className="w-full px-4 sm:px-7 lg:px-11 xl:px-15 2xl:px-19 pt-12 pb-16"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      onTouchStart={() => setIsHovering(true)}
+    >
+
+      {/* Section Heading */}
+      <div className="text-center mb-10 lg:mb-14">
+        <p className="mb-3 text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-sky-400">
+          WHAT WE OFFER
+        </p>
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
+          Our Services
+        </h2>
       </div>
 
-      {/* Category Slider */}
-      <Swiper
-        modules={[FreeMode]}
-        freeMode={{
-          enabled: true,
-          momentum: true,
-          momentumRatio: 0.8,
-        }}
-        grabCursor={true}
-        centerInsufficientSlides={true}
-        watchOverflow={true}
-        spaceBetween={14}
-        className="!overflow-visible"
-        breakpoints={{
-          0: {
-            slidesPerView: 1.25,
-            spaceBetween: 12,
-          },
-
-          480: {
-            slidesPerView: 2.1,
-            spaceBetween: 14,
-          },
-
-          640: {
-            slidesPerView: 2.7,
-            spaceBetween: 16,
-          },
-
-          768: {
-            slidesPerView: 3.5,
-            spaceBetween: 18,
-          },
-
-          1024: {
-            slidesPerView: 4.5,
-            spaceBetween: 18,
-          },
-
-          1280: {
-            slidesPerView: 5,
-            spaceBetween: 20,
-          },
-
-          1440: {
-            slidesPerView: 5.5,
-            spaceBetween: 20,
-          },
-
-          1600: {
-            slidesPerView: 6,
-            spaceBetween: 22,
-          },
-        }}
+      <div
+        ref={scrollContainerRef}
+        className="grid grid-cols-2 min-[480px]:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-3 xl:gap-5 mb-12 w-full"
       >
-        {categories.map((item, index) => (
-          <SwiperSlide key={item._id || index}>
-            <Link to={`/products?category=${item.slug}`} className="block group cursor-pointer">
+        {categories.map(cat => {
+          const isActive = (activeCategory?._id && activeCategory._id === cat._id) ||
+            (activeCategory?.id && activeCategory.id === cat.id) ||
+            (activeCategory?.slug && activeCategory.slug === cat.slug);
+          return (
+            <button
+              key={cat._id || cat.id || cat.slug}
+              data-active={isActive}
+              onMouseEnter={() => window.innerWidth >= 1024 && setActiveCategory(cat)}
+              onClick={() => setActiveCategory(cat)}
+              className={`w-full text-center whitespace-normal break-words px-3 py-2.5 sm:px-4 sm:py-3 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 border shadow-lg flex items-center justify-center min-h-[48px] ${isActive
+                ? 'bg-sky-500 border-sky-400 text-white shadow-sky-500/30 scale-105'
+                : 'bg-white/5 border-white/10 text-slate-300 backdrop-blur-md hover:bg-white/10 hover:border-sky-400/50 hover:text-white'
+                }`}
+            >
+              <span className="line-clamp-2">{cat.name}</span>
+            </button>
+          );
+        })}
+      </div>
 
-              {/* Image Card */}
-              <div
-                className="
-                  relative
-                  overflow-hidden
-                  rounded-[22px]
-                  border
-                  border-white/10
-                  bg-white
-                  shadow-[0_12px_35px_rgba(0,0,0,0.18)]
-                  transition-all
-                  duration-500
-                  group-hover:-translate-y-1.5
-                  group-hover:border-sky-400/40
-                  group-hover:shadow-[0_20px_45px_rgba(0,0,0,0.28)]
-                "
-              >
-                {/* Image */}
-                <div className="relative aspect-square overflow-hidden bg-slate-100">
+      {/* Preview Area */}
+      <div className="relative w-full min-h-[550px] sm:min-h-[500px] lg:aspect-[21/9] rounded-[32px] overflow-hidden border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-[#0a1526]/80 backdrop-blur-xl group flex">
+        {categories.map((cat, index) => {
+          const isActive = (activeCategory?._id && activeCategory._id === cat._id) ||
+            (activeCategory?.id && activeCategory.id === cat.id) ||
+            (activeCategory?.slug && activeCategory.slug === cat.slug);
 
-                  {getSrcFromMap(item.image) ? (
-                    <img
-                      src={getSrcFromMap(item.image)}
-                      alt={item.name}
-                      loading="lazy"
-                      className="
-                        h-full
-                        w-full
-                        object-cover
-                        transition-transform
-                        duration-700
-                        ease-out
-                        group-hover:scale-105
-                      "
-                    />
-                  ) : item.image && !getSrcFromMap(item.image) ? (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      loading="lazy"
-                      className="
-                        h-full
-                        w-full
-                        object-cover
-                        transition-transform
-                        duration-700
-                        ease-out
-                        group-hover:scale-105
-                      "
-                      onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
-                    />
-                  ) : null}
-                  {(!item.image || (!getSrcFromMap(item.image) && !item.image)) && (
-                    <div className="h-full w-full flex items-center justify-center bg-slate-200 text-slate-500 font-semibold" style={item.image && !getSrcFromMap(item.image) ? { display: 'none' } : {}}>
-                      No Image
-                    </div>
-                  )}
+          // Front-end friendly copy enhancements based on category name
+          const categoryName = cat.name?.toLowerCase() || '';
+          let frontendFeatures = [];
 
-                  {/* Soft Overlay */}
-                  <div
-                    className="
-                      pointer-events-none
-                      absolute
-                      inset-0
-                      bg-gradient-to-t
-                      from-black/20
-                      via-transparent
-                      to-transparent
-                      opacity-0
-                      transition-opacity
-                      duration-500
-                      group-hover:opacity-100
-                    "
-                  />
+          if (categoryName.includes('shrink')) {
+            frontendFeatures = ["360° Custom Branding", "Tamper-Evident Security", "Vibrant Print Quality", "Conforms to Any Shape"];
+          } else if (categoryName.includes('mono carton') || categoryName.includes('carton')) {
+            frontendFeatures = ["Premium Die-Cut Precision", "Sustainable Materials", "High-Durability Finish", "Custom Embellishments"];
+          } else if (categoryName.includes('tube')) {
+            frontendFeatures = ["Leak-Proof Sealing", "Gloss & Matte Finishes", "Food-Grade Compliant", "Multi-Layer Protection"];
+          } else if (categoryName.includes('label') || categoryName.includes('sticker')) {
+            frontendFeatures = ["Water-Resistant Coating", "Strong Adhesive Bond", "UV Protected Inks", "Roll or Sheet Formats"];
+          } else if (categoryName.includes('pouch') || categoryName.includes('flexible')) {
+            frontendFeatures = ["High Barrier Protection", "Resealable Zippers", "Stand-Up Capabilities", "Extended Shelf Life"];
+          } else {
+            frontendFeatures = ["Premium Quality Output", "Customizable Dimensions", "Fast Turnaround Time", "Dedicated Support"];
+          }
 
-                  {/* Number */}
-                  <div
-                    className="
-                      absolute
-                      left-3
-                      top-3
-                      flex
-                      h-8
-                      w-8
-                      items-center
-                      justify-center
-                      rounded-full
-                      border
-                      border-white/40
-                      bg-black/30
-                      text-xs
-                      font-semibold
-                      text-white
-                      backdrop-blur-md
-                    "
-                  >
-                    {String(index + 1).padStart(2, "0")}
+          const defaultDesc = `Discover our premium ${cat.name} packaging solutions designed to elevate your brand presence and ensure structural integrity. Crafted with precision and state-of-the-art technology to meet your exact specifications.`;
+
+          return (
+            <div
+              key={cat._id || cat.id || cat.slug || index}
+              className={`absolute inset-0 flex flex-col-reverse lg:flex-row transition-all duration-700 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
+            >
+              {/* Left Side: Content */}
+              <div className="w-full lg:w-[55%] flex flex-col justify-center p-6 sm:p-10 lg:p-14 z-20 bg-[#0a1526] lg:bg-transparent lg:bg-gradient-to-r lg:from-[#0a1526] lg:via-[#0a1526]/95 lg:to-transparent">
+                <div className={`transform transition-all duration-700 ease-out delay-100 ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                  <div className="mb-4 inline-flex items-center">
+                    <span className="inline-flex rounded-full border border-sky-400/20 bg-sky-500/10 px-4 py-1.5 text-xs font-semibold text-sky-300 backdrop-blur-xl uppercase tracking-wider">
+                      Product Showcase
+                    </span>
                   </div>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 tracking-tight leading-tight">
+                    {cat.name}
+                  </h3>
+                  <p className="text-slate-300 sm:text-lg leading-relaxed mb-8 max-w-xl line-clamp-3">
+                    {cat.description || defaultDesc}
+                  </p>
+
+                  {/* Features / Supporting Info */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-10 max-w-lg">
+                    {frontendFeatures.map((feature, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-sky-500/20 border border-sky-400/30">
+                          <div className="w-1.5 h-1.5 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]"></div>
+                        </div>
+                        <span className="text-sm flex-1 sm:text-base text-slate-300 font-medium">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Link
+                    to={`/products?category=${cat.slug}`}
+                    className="inline-flex items-center gap-3 rounded-full bg-sky-500 hover:bg-sky-400 text-white px-7 py-3.5 font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(56,189,248,0.4)] border border-sky-400/50 group/btn"
+                  >
+                    <span>Explore Product</span>
+                    <svg className="w-5 h-5 transition-transform duration-300 group-hover/btn:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </Link>
                 </div>
               </div>
 
-              {/* Title */}
-              <div className="mt-3.5 px-1">
-                <h3
-                  className="
-                    text-sm
-                    sm:text-[15px]
-                    lg:text-base
-                    font-semibold
-                    leading-6
-                    text-white
-                    transition-colors
-                    duration-300
-                    group-hover:text-sky-400
-                  "
-                >
-                  {item.name}
-                </h3>
+              {/* Right Side: Image */}
+              <div
+                className={`relative w-full lg:w-[45%] h-[280px] sm:h-[400px] lg:h-full shrink-0 overflow-hidden transform transition-all duration-[1000ms] ease-out origin-right ${isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-0'}`}
+              >
+                {/* Image Source resolution */}
+                {(() => {
+                  const mappedSrc = getSrcFromMap(cat.image);
+                  const finalSrc = mappedSrc || cat.image;
+                  if (finalSrc) {
+                    return (
+                      <img
+                        src={finalSrc}
+                        alt={cat.name}
+                        className="w-full h-full object-cover object-center transition-transform duration-[2000ms] ease-out group-hover:scale-105"
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                    );
+                  }
+                  return <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-500">No Image Available</div>;
+                })()}
 
-                {/* Small Underline */}
-                <div
-                  className="
-                    mt-2
-                    h-[2px]
-                    w-0
-                    rounded-full
-                    bg-sky-400
-                    transition-all
-                    duration-500
-                    group-hover:w-8
-                  "
-                />
+                {/* Depth / Shadows overlay for image */}
+                <div className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-transparent via-transparent to-[#0a1526]/40 pointer-events-none"></div>
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0a1526] to-transparent lg:hidden pointer-events-none"></div>
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0a1526] to-transparent hidden lg:block pointer-events-none"></div>
+                <div className="absolute inset-0 lg:border-l border-white/10 pointer-events-none"></div>
               </div>
+            </div>
+          );
+        })}
+      </div>
 
-            </Link>
-          </SwiperSlide>
-        ))}
-      </Swiper>
     </section>
   );
 };
