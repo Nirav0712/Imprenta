@@ -30,20 +30,19 @@ const ProductCard = ({ product, hidePrice = false }) => {
           )}
 
           {/* Image */}
-          <div className="aspect-[1/1] overflow-hidden">
-
+          <div className="aspect-square overflow-hidden bg-[#0A1220] relative flex items-center justify-center p-3">
             {product.image ? (
               <img
                 src={product.image}
-                alt={product.title}
-                onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
-                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 bg-slate-100"
+                alt={product.title || "Product"}
+                loading="lazy"
+                onError={(e) => { e.target.style.display = 'none'; if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex'; }}
+                className="h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
               />
             ) : null}
-            <div className="h-full w-full bg-slate-200 flex items-center justify-center text-slate-500 font-semibold text-sm" style={{ display: product.image ? 'none' : 'flex' }}>
-              No Image
+            <div className="h-full w-full flex items-center justify-center text-slate-500 font-semibold text-xs" style={{ display: product.image ? 'none' : 'flex' }}>
+              No Image Available
             </div>
-
           </div>
 
         </div>
@@ -52,7 +51,7 @@ const ProductCard = ({ product, hidePrice = false }) => {
 
         <div className="mt-4 px-1">
 
-          <h3 className="line-clamp-2 text-[15px] sm:text-[16px] leading-[1.3] font-semibold text-white transition duration-300 group-hover:text-sky-400">
+          <h3 className="whitespace-nowrap overflow-hidden text-ellipsis block w-full text-[15px] sm:text-[16px] leading-[1.3] font-semibold text-white transition duration-300 group-hover:text-sky-400">
             {product.title}
           </h3>
 

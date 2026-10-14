@@ -6,6 +6,53 @@ import "./index.css";
 import { RecentlyViewedProvider } from "./context/RecentlyViewedContext";
 import { TemplateProvider } from "./context/TemplateContext";
 
+// Google Translate DOM mutation safety patch for React Virtual DOM
+if (typeof Node === "function" && Node.prototype) {
+  const originalRemoveChild = Node.prototype.removeChild;
+  Node.prototype.removeChild = function (child) {
+    if (child.parentNode !== this) {
+      if (console) {
+        console.warn("Cannot remove a child from a different parent", child, this);
+      }
+      return child;
+    }
+    return originalRemoveChild.apply(this, arguments);
+  };
+
+  const originalInsertBefore = Node.prototype.insertBefore;
+  Node.prototype.insertBefore = function (newNode, referenceNode) {
+    if (referenceNode && referenceNode.parentNode !== this) {
+      if (console) {
+        console.warn("Cannot insert before a reference node from a different parent", referenceNode, this);
+      }
+      return newNode;
+    }
+    return originalInsertBefore.apply(this, arguments);
+  };
+}
+
+// Keep body.top at 0 without shifting layout when Google Translate translates
+if (typeof window !== "undefined") {
+  const resetBodyTop = () => {
+    if (document.body && document.body.style.top && document.body.style.top !== "0px") {
+      document.body.style.top = "0px";
+    }
+  };
+
+  if (typeof MutationObserver !== "undefined") {
+    const observer = new MutationObserver(resetBodyTop);
+    if (document.body) {
+      observer.observe(document.body, { attributes: true, attributeFilter: ["style"] });
+    } else {
+      document.addEventListener("DOMContentLoaded", () => {
+        if (document.body) {
+          observer.observe(document.body, { attributes: true, attributeFilter: ["style"] });
+        }
+      });
+    }
+  }
+}
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RecentlyViewedProvider>

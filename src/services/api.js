@@ -3,7 +3,7 @@ import axios from "axios";
 // Use environment variable with fallback
 const API_URL =
     import.meta.env.VITE_API_URL ||
-    "https://darkgreen-lyrebird-159850.hostingersite.com/api";
+    "https://mediumslateblue-gull-568254.hostingersite.com/api";
 
 console.log("🔥 API URL:", API_URL);
 
@@ -140,6 +140,72 @@ export const fetchHeroSlides = async () => {
 export const fetchOrders = async () => (await api.get("/orders")).data;
 export const fetchOrderById = async (id) => (await api.get(`/orders/${id}`)).data;
 
+// Blogs
+export const fetchBlogs = async (params = {}) => {
+    const response = await api.get("/blogs", { params });
+    // Process image URLs if needed
+    if (response.data?.blogs) {
+        response.data.blogs = response.data.blogs.map(b => ({
+            ...b,
+            image: getImageUrl(b.image)
+        }));
+    }
+    return response.data;
+};
+
+export const fetchBlogBySlug = async (slug) => {
+    const response = await api.get(`/blogs/slug/${slug}`);
+    if (response.data?.blog) {
+        response.data.blog.image = getImageUrl(response.data.blog.image);
+    }
+    return response.data;
+};
+
+// Expos
+export const fetchExpos = async () => {
+    const response = await api.get("/expos/public");
+    if (response.data?.expos) {
+        response.data.expos = response.data.expos.map((e) => {
+            const resolvedImg = getImageUrl(e.image || e.heroImage || "");
+            return {
+                ...e,
+                image: resolvedImg,
+                heroImage: resolvedImg,
+                heroSlideImages: e.heroSlideImages ? e.heroSlideImages.map(getImageUrl) : [],
+                whyImage: getImageUrl(e.whyImage),
+                ogImage: getImageUrl(e.ogImage),
+            };
+        });
+    }
+    return response.data;
+};
+
+export const fetchExpoBySlug = async (slug, preview = false) => {
+    const response = await api.get(`/expos/public/${slug}`, {
+        params: { preview: preview ? "true" : "false" },
+    });
+    if (response.data?.expo) {
+        const resolvedImg = getImageUrl(response.data.expo.image || response.data.expo.heroImage || "");
+        response.data.expo.image = resolvedImg;
+        response.data.expo.heroImage = resolvedImg;
+        if (response.data.expo.heroSlideImages) {
+            response.data.expo.heroSlideImages = response.data.expo.heroSlideImages.map(getImageUrl);
+        }
+        if (response.data.expo.whyImage) {
+            response.data.expo.whyImage = getImageUrl(response.data.expo.whyImage);
+        }
+        if (response.data.expo.ogImage) {
+            response.data.expo.ogImage = getImageUrl(response.data.expo.ogImage);
+        }
+    }
+    return response.data;
+};
+
+export const submitExpoLead = async (slug, leadData) => {
+    const response = await api.post(`/expos/public/${slug}/submit`, leadData);
+    return response.data;
+};
+
 // USER CART
 export const fetchCart = async () => (await api.get("/auth/cart")).data;
 export const saveCart = async (cart) => (await api.put("/auth/cart", { cart })).data;
@@ -148,5 +214,23 @@ export const fetchSettings = async () => {
     const response = await api.get("/settings");
     return response.data;
 };
+
+// VISITOR INQUIRY
+export const submitVisitorInquiry = async (inquiryData) => {
+    const response = await api.post("/visitor-inquiries", inquiryData);
+    return response.data;
+};
+
+export const uploadVisitingCard = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await api.post("/visitor-inquiries/upload-card", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+    return response.data;
+};
+
 
 export default api;

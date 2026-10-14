@@ -3,13 +3,88 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Imprenta | Label, Printing & Packaging Manufacturer</title>
   <meta name="google-site-verification" content="Yyg5oeEY7-FI-PoA1HO7WB_a6yOgKZxa9FexVeoCElw" />
+  <style>
+    /* Hide ONLY Google Translate Top Banner without blocking translation engine */
+    .goog-te-banner-frame,
+    .goog-te-banner-frame.skiptranslate,
+    iframe.goog-te-banner-frame,
+    .VIpgJd-ZVi9od-ORHb-OEVmcd,
+    .goog-tooltip,
+    .goog-tooltip:hover {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      height: 0px !important;
+      max-height: 0px !important;
+      pointer-events: none !important;
+    }
+
+    body {
+      top: 0px !important;
+      position: static !important;
+      margin-top: 0px !important;
+    }
+
+    html {
+      top: 0px !important;
+      margin-top: 0px !important;
+    }
+
+    #google_translate_element {
+      position: absolute !important;
+      left: -9999px !important;
+      top: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .goog-text-highlight {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+  </style>
 </head>
 
 <body>
+  <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new window.google.translate.TranslateElement({
+        pageLanguage: 'en',
+        autoDisplay: false
+      }, 'google_translate_element');
+
+      // Ensure language sync with localStorage & cookies across all environments
+      try {
+        var saved = localStorage.getItem('selected_lang');
+        if (saved && saved !== 'en') {
+          var tries = 0;
+          var t = setInterval(function () {
+            tries++;
+            var combo = document.querySelector('.goog-te-combo');
+            if (combo) {
+              if (combo.value !== saved) {
+                combo.value = saved;
+                combo.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+              clearInterval(t);
+            }
+            if (tries > 40) clearInterval(t);
+          }, 100);
+        }
+      } catch (e) {}
+    }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
